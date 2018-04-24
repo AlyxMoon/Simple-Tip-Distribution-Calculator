@@ -19,9 +19,9 @@
       <input type="number" min="0" step="0.01" name="change" v-model.number="change" />
     </p>
     <hr />
-    <ul v-for="(count, type) in neededBills" :key="`neededBill-${type}`">
+    <ul v-for="(data, type) in neededBills" :key="`neededBill-${type}`">
       <li>
-        Number of {{ type }}'s -- {{ count }}
+        Number of {{ type }}'s -- {{ data.count }} -- diff: {{ data.diff}}
       </li>
     </ul>
     <hr />
@@ -87,10 +87,22 @@ export default {
         { type: 100, count: 0 }
       ],
       neededBills: {
-        1: 0,
-        5: 0,
-        10: 0,
-        20: 0
+        1: {
+          count: 0,
+          diff: 0
+        },
+        5: {
+          count: 0,
+          diff: 0
+        },
+        10: {
+          count: 0,
+          diff: 0
+        },
+        20: {
+          count: 0,
+          diff: 0
+        }
       },
       change: 0,
       totalTips: 0,
@@ -160,17 +172,34 @@ export default {
 
     computeNeededBills () {
       this.neededBills = {
-        1: 0,
-        5: 0,
-        10: 0,
-        20: 0
+        1: {
+          count: 0,
+          diff: 0
+        },
+        5: {
+          count: 0,
+          diff: 0
+        },
+        10: {
+          count: 0,
+          diff: 0
+        },
+        20: {
+          count: 0,
+          diff: 0
+        }
       }
 
       this.employees.forEach(employee => {
         employee.bills.forEach(bill => {
-          this.neededBills[bill.type] += bill.count
+          this.neededBills[bill.type].count += bill.count
         })
       })
+
+      this.neededBills[1].diff = this.neededBills[1].count - this.bills[0].count
+      this.neededBills[5].diff = this.neededBills[5].count - this.bills[2].count
+      this.neededBills[10].diff = this.neededBills[10].count - this.bills[3].count
+      this.neededBills[20].diff = this.neededBills[20].count - this.bills[4].count
     },
 
     employeeTips (hours) {
