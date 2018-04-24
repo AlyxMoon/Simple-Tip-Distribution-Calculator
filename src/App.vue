@@ -55,30 +55,9 @@ export default {
   name: 'App',
   data () {
     return {
-      employees: [
-        {
-          name: 'Alyx the twat',
-          hours: 12
-        },
-        {
-          name: 'Dean the lazy prick',
-          hours: 10
-        },
-        {
-          name: 'Kenzoku the Cool',
-          hours: 10
-        },
-        {
-          name: 'KissOfFate THE AWESOME',
-          hours: 10
-        },
-        {
-          name: 'pvpkill the Madness King',
-          hours: 10
-        }
-      ],
+      employees: [],
       bills: [
-        { type: 1, count: 50 },
+        { type: 1, count: 0 },
         { type: 2, count: 0 },
         { type: 5, count: 0 },
         { type: 10, count: 0 },
