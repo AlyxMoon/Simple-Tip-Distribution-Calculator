@@ -10,26 +10,46 @@
       Leftover Tips: {{ leftovers }}
     </p>
     <hr />
+    <p v-for="(bill, index) in bills" :key="`bill-${index}`">
+      <label for="bill">Number of {{ bill.type }}'s</label>
+      <input type="number" min="0" name="bill" v-model="bill.count" />
+    </p>
+    <p>
+      <label for="change">Amount of Change</label>
+      <input type="number" min="0" step="0.01" name="change" v-model.number="change" />
+    </p>
+    <hr />
+    <ul v-for="(count, type) in neededBills" :key="`neededBill-${type}`">
+      <li>
+        Number of {{ type }}'s -- {{ count }}
+      </li>
+    </ul>
+    <hr />
     <template v-for="(employee, index) in employees" >
       <p :key="`employee-info-${index}`">
         <label for="name">Employee: </label>
         <input type="text" name="name" v-model="employee.name" />
         <label for="hours">Tippable Hours:</label>
         <input type="number" min="0" name="hours" v-model.number="employee.hours" />
+        <span class="delete" @click.prevent="removeEmployee(index)">X</span>
       </p>
       <p :key="`employee-tips-${index}`">
         Tips Earned: {{ employeeTips(employee.hours) }}
       </p>
+      <ul :key="`employee-bills-${index}`">
+        <template v-for="(bill, j) in employee.bills">
+          <li :key="`employee-${index}-bills-${j}`">
+            Number of {{ bill.type }}'s -- {{ bill.count }}
+          </li>
+        </template>
+      </ul>
     </template>
-    <hr />
-    <p v-for="(bill, index) in bills" :key="`bill-${index}`">
-      <label for="bill">Number of {{ bill.type }}'s</label>
-      <input type="number" min="0" name="bill" v-model="bill.count" />
-    </p>
+    <button @click.prevent="addEmployee">Add Employee</button>
   </div>
 </template>
 
 <script>
+const validBillTypes = [20, 10, 5, 1]
 
 export default {
   name: 'App',
@@ -38,7 +58,7 @@ export default {
       employees: [
         {
           name: 'Alyx the twat',
-          hours: 10
+          hours: 12
         },
         {
           name: 'Dean the lazy prick',
@@ -65,31 +85,123 @@ export default {
         { type: 20, count: 0 },
         { type: 50, count: 0 },
         { type: 100, count: 0 }
-      ]
+      ],
+      neededBills: {
+        1: 0,
+        5: 0,
+        10: 0,
+        20: 0
+      },
+      change: 0,
+      totalTips: 0,
+      totalHours: 0
+    }
+  },
+
+  watch: {
+    employees: {
+      handler: function (oldValue, newValue) {
+        this.computeTotalHours()
+        this.updateEmployeeBills()
+        this.computeNeededBills()
+      },
+      deep: true
+    },
+    bills: {
+      handler: function (oldValue, newValue) {
+        this.computeTotalTips()
+        this.updateEmployeeBills()
+        this.computeNeededBills()
+      },
+      deep: true
+    },
+    change: {
+      handler: function (oldValue, newValue) {
+        this.computeTotalTips()
+        this.updateEmployeeBills()
+        this.computeNeededBills()
+      },
+      deep: true
     }
   },
 
   computed: {
-    totalHours () {
-      return this.employees.reduce((sum, employee) => {
-        return employee.hours + sum
-      }, 0)
-    },
-    totalTips () {
-      return this.bills.reduce((sum, bill) => {
-        return (bill.type * bill.count) + sum
-      }, 0)
-    },
     leftovers () {
+      if (this.totalHours === 0) return 0
       return this.totalTips - this.employees.reduce((sum, employee) => {
         return this.employeeTips(employee.hours) + sum
       }, 0)
     }
   },
+
   methods: {
+    addEmployee () {
+      this.employees.push({
+        name: '',
+        hours: 0
+      })
+    },
+
+    removeEmployee (index) {
+      this.employees.splice(index, 1)
+    },
+
+    computeTotalHours () {
+      this.totalHours = this.employees.reduce((sum, employee) => {
+        return employee.hours + sum
+      }, 0)
+    },
+
+    computeTotalTips () {
+      this.totalTips = this.change + this.bills.reduce((sum, bill) => {
+        return (bill.type * bill.count) + sum
+      }, 0)
+    },
+
+    computeNeededBills () {
+      this.neededBills = {
+        1: 0,
+        5: 0,
+        10: 0,
+        20: 0
+      }
+
+      this.employees.forEach(employee => {
+        employee.bills.forEach(bill => {
+          this.neededBills[bill.type] += bill.count
+        })
+      })
+    },
+
     employeeTips (hours) {
+      if (this.totalHours === 0) return 0
       return Math.floor(this.totalTips * (hours / this.totalHours))
+    },
+
+    updateEmployeeBills () {
+      this.employees.forEach(employee => {
+        let total = this.employeeTips(employee.hours)
+        employee.bills = validBillTypes.map(bill => {
+          let count = 0
+          while (total >= bill) {
+            count += 1
+            total -= bill
+          }
+
+          return {
+            type: bill,
+            count
+          }
+        })
+      })
     }
+  },
+
+  created () {
+    this.computeTotalHours()
+    this.computeTotalTips()
+    this.updateEmployeeBills()
+    this.computeNeededBills()
   }
 }
 </script>
@@ -97,4 +209,11 @@ export default {
 <style>
 #app {
 }
+
+.delete {
+  color: red;
+  cursor: pointer;
+  user-select: none;
+}
+
 </style>
