@@ -1,38 +1,29 @@
 <template>
   <div id="app">
     <ul class="page-navigation">
-      <li class="navigation-item" :class="{ active: page === 0 }">
-        <button class="pure-button" @click="changePage(0)">1</button>
+      <li class="navigation-item">
+        <button class="pure-button" :class="{ 'pure-button-primary': page === 0 }" @click="changePage(0)">Employees</button>
       </li>
-      <li class="navigation-item" :class="{ active: page === 1 }">
-        <button class="pure-button" @click="changePage(1)">2</button>
+      <li class="navigation-item">
+        <button class="pure-button" :class="{ 'pure-button-primary': page === 1 }" @click="changePage(1)">Bill Counts</button>
       </li>
-      <li class="navigation-item" :class="{ active: page === 2 }">
-        <button class="pure-button" @click="changePage(2)">3</button>
+      <li class="navigation-item">
+        <button class="pure-button" :class="{ 'pure-button-primary': page === 2 }" @click="changePage(2)">Computed Stuff</button>
       </li>
     </ul>
+    <hr />
 
     <div v-if="page === 0">
       <template v-for="(employee, index) in employees" >
-        <p :key="`employee-info-${index}`">
-          <label for="name">Employee: </label>
-          <input type="text" name="name" v-model="employee.name" />
-          <label for="hours">Tippable Hours:</label>
-          <input type="number" min="0" name="hours" v-model.number="employee.hours" />
-          <span class="delete" @click.prevent="removeEmployee(index)">X</span>
-        </p>
-        <p :key="`employee-tips-${index}`">
-          Tips Earned: {{ employeeTips(employee.hours) }}
-        </p>
-        <ul :key="`employee-bills-${index}`">
-          <template v-for="(bill, j) in employee.bills">
-            <li :key="`employee-${index}-bills-${j}`">
-              Number of {{ bill.type }}'s -- {{ bill.count }}
-            </li>
-          </template>
-        </ul>
+        <form class="pure-form" :key="`employee-info-${index}`">
+          <fieldset class="pure-group">
+            <input class="pure-input-3-4" type="text" placeholder="Employee Name" v-model="employee.name" />
+            <input class="pure-input-3-4" type="number" min="0" placeholder="Hours Worked" v-model.number="employee.hours" />
+            <input class="pure-input-3-4 pure-button pure-button-error" type="submit" @click.prevent="removeEmployee(index)" value="Remove" />
+          </fieldset>
+        </form>
       </template>
-      <button class="pure-button" @click.prevent="addEmployee">Add Employee</button>
+      <button class="pure-button pure-button-secondary" @click.prevent="addEmployee">Add Employee</button>
     </div>
 
     <div v-if="page === 1">
@@ -65,6 +56,18 @@
           Number of {{ type }}'s -- {{ data.count }} -- diff: {{ data.diff}}
         </li>
       </ul>
+
+      <!-- TODO: Show employee tip counts on this page -->
+      <!-- <p :key="`employee-tips-${index}`">
+        Tips Earned: {{ employeeTips(employee.hours) }}
+      </p>
+      <ul :key="`employee-bills-${index}`">
+        <template v-for="(bill, j) in employee.bills">
+          <li :key="`employee-${index}-bills-${j}`">
+            Number of {{ bill.type }}'s -- {{ bill.count }}
+          </li>
+        </template>
+      </ul> -->
     </div>
   </div>
 </template>
@@ -240,11 +243,12 @@ export default {
 }
 </script>
 
-<style src='purecss/build/pure-min.css'>
-
-</style>
+<style src='purecss/build/pure-min.css' />
 
 <style>
+body {
+  padding: 0.5em;
+}
 
 #app {
 }
@@ -265,9 +269,29 @@ export default {
   display: inline-block;
 }
 
-.navigation-item.active button {
-  background-color: blue;
+.pure-button-success,
+.pure-button-error,
+.pure-button-warning,
+.pure-button-secondary {
   color: white;
+  border-radius: 4px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.pure-button-success {
+    background: rgb(28, 184, 65);
+}
+
+.pure-button-error {
+    background: rgb(202, 60, 60);
+}
+
+.pure-button-warning {
+    background: rgb(223, 117, 20);
+}
+
+.pure-button-secondary {
+    background: rgb(66, 184, 221);
 }
 
 </style>
