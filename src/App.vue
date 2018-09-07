@@ -5,10 +5,10 @@
         <button class="pure-button" @click="changePage(0)">1</button>
       </li>
       <li class="navigation-item" :class="{ active: page === 1 }">
-        <button @click="changePage(1)">2</button>
+        <button class="pure-button" @click="changePage(1)">2</button>
       </li>
       <li class="navigation-item" :class="{ active: page === 2 }">
-        <button @click="changePage(2)">3</button>
+        <button class="pure-button" @click="changePage(2)">3</button>
       </li>
     </ul>
 
@@ -32,18 +32,22 @@
           </template>
         </ul>
       </template>
-      <button @click.prevent="addEmployee">Add Employee</button>
+      <button class="pure-button" @click.prevent="addEmployee">Add Employee</button>
     </div>
 
     <div v-if="page === 1">
-      <p v-for="(bill, index) in bills" :key="`bill-${index}`">
-        <label for="bill">Number of {{ bill.type }}'s</label>
-        <input type="number" min="0" name="bill" v-model="bill.count" />
-      </p>
-      <p>
-        <label for="change">Amount of Change</label>
-        <input type="number" min="0" step="0.01" name="change" v-model.number="change" />
-      </p>
+      <form class="pure-form pure-form-aligned">
+        <fieldset>
+          <div class="pure-control-group" v-for="(bill, index) in bills" :key="`bill-${index}`">
+            <label :for="`bill-${bill.type}`">Number of {{ bill.type }}'s</label>
+            <input :id="`bill-${bill.type}`" name="bill" type="number" min="0"  v-model="bill.count" />
+          </div>
+          <div class="pure-control-group">
+            <label for="change">Amount of Change</label>
+            <input id="chnage" name="change" type="number" min="0" step="0.01"  v-model.number="change" />
+          </div>
+        </fieldset>
+      </form>
     </div>
 
     <div v-if="page === 2">
