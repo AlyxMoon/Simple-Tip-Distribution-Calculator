@@ -19,10 +19,10 @@
           <fieldset class="pure-group">
             <input
               class="pure-input-3-4" type="text" placeholder="Employee Name"
-              :value="employee.name" @input="e => changeEmployeeName(index, e.target.value)" />
+              :value="employee.name" @input="changeEmployeeName({ index, name: $event.target.value })" />
             <input
               class="pure-input-3-4" type="number" min="0" placeholder="Hours Worked"
-              :value="employee.hours" @input="e => changeEmployeeHours(index, e.target.value)" />
+              :value="employee.hours" @input="changeEmployeeHours({ index, hours: $event.target.value })" />
             <input
               class="pure-input-3-4 pure-button pure-button-error" type="submit"
               @click.prevent="removeEmployee(index)" value="Remove" />
@@ -37,11 +37,15 @@
         <fieldset>
           <div class="pure-control-group" v-for="(bill, index) in bills" :key="`bill-${index}`">
             <label :for="`bill-${bill.type}`">Number of {{ bill.type }}'s</label>
-            <input :id="`bill-${bill.type}`" name="bill" type="number" min="0"  v-model="bill.count" />
+            <input
+              :id="`bill-${bill.type}`" name="bill" type="number" min="0"
+              :value="bill.count" @input="changeBillCount({ type: bill.type, count: $event.target.value })" />
           </div>
           <div class="pure-control-group">
             <label for="change">Amount of Change</label>
-            <input id="change" name="change" type="number" min="0" step="0.01"  v-model.number="change" />
+            <input
+              id="change" name="change" type="number" min="0" step="0.01"
+              :value="change" @input="changeBillCount({ type: 'change', count: $event.target.value })"  />
           </div>
         </fieldset>
       </form>
@@ -63,17 +67,14 @@
         </li>
       </ul> -->
 
-      <!-- TODO: Show employee tip counts on this page -->
-      <!-- <p :key="`employee-tips-${index}`">
-        Tips Earned: {{ employeeTips(employee.hours) }}
-      </p>
-      <ul :key="`employee-bills-${index}`">
-        <template v-for="(bill, j) in employee.bills">
-          <li :key="`employee-${index}-bills-${j}`">
+      <div v-for="(employee, index) in getEmployeeBills()" :key="`employee-compute-${index}`">
+        <h4>{{ employee.name }}</h4>
+        <ul v-if="employee.bills">
+          <li v-for="(bill, j) in employee.bills" :key="`employee-compute-${index}-bills-${j}`">
             Number of {{ bill.type }}'s -- {{ bill.count }}
           </li>
-        </template>
-      </ul> -->
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -92,14 +93,15 @@ export default {
     //   }, 0)
     // },
     ...mapGetters([
+      'getEmployeeBills',
       'getTotalHours',
       'getTotalTips'
     ]),
     ...mapState({
-      employees: state => state.app.employees,
       bills: state => state.app.bills,
-      neededBills: state => state.app.neededBills,
       change: state => state.app.change,
+      employees: state => state.app.employees,
+      employeeBills: state => state.app.employeeBills,
       page: state => state.app.page
     })
   },
@@ -107,6 +109,7 @@ export default {
   methods: {
     ...mapActions([
       'addEmployee',
+      'changeBillCount',
       'changeEmployeeHours',
       'changeEmployeeName',
       'changePage',

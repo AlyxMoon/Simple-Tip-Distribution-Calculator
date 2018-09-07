@@ -11,13 +11,21 @@ export const changePage = ({ commit }, page) => {
   commit('CHANGE_PAGE', { page })
 }
 
-export const changeEmployeeHours = ({ commit, state }, index, hours) => {
-  if (index >= 0 && index < state.employees.length) {
-    commit('SET_EMPLOYEE_HOURS', { index, hours })
+export const changeBillCount = ({ commit, state }, { type, count }) => {
+  if (type === 'change') {
+    commit('SET_CHANGE_COUNT', { count })
+  } else {
+    commit('SET_BILL_COUNT', { index: state.bills.findIndex(bill => bill.type === type), count })
   }
 }
 
-export const changeEmployeeName = ({ commit, state }, index, name) => {
+export const changeEmployeeHours = ({ commit, state }, { index, hours }) => {
+  if (index >= 0 && index < state.employees.length) {
+    commit('SET_EMPLOYEE_HOURS', { index, hours: Number(hours) })
+  }
+}
+
+export const changeEmployeeName = ({ commit, state }, { index, name }) => {
   if (index >= 0 && index < state.employees.length) {
     commit('SET_EMPLOYEE_NAME', { index, name })
   }

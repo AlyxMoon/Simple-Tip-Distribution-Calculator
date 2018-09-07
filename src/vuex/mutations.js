@@ -12,6 +12,14 @@ export const REMOVE_EMPLOYEE = (state, payload) => {
   state.employeeTips = state.employeeTips.slice(0, payload.index).concat(state.employeeTips.slice(payload.index + 1))
 }
 
+export const SET_BILL_COUNT = (state, payload) => {
+  state.bills[payload.index] = Object.assign({}, state.bills[payload.index], { count: payload.count })
+}
+
+export const SET_CHANGE_COUNT = (state, payload) => {
+  state.change = payload.change
+}
+
 export const SET_EMPLOYEE_HOURS = (state, payload) => {
   state.employees[payload.index] = Object.assign({}, state.employees[payload.index], { hours: payload.hours })
 }
