@@ -2,7 +2,7 @@
   <div id="app">
     <ul class="page-navigation">
       <li class="navigation-item" :class="{ active: page === 0 }">
-        <button @click="changePage(0)">1</button>
+        <button class="pure-button" @click="changePage(0)">1</button>
       </li>
       <li class="navigation-item" :class="{ active: page === 1 }">
         <button @click="changePage(1)">2</button>
@@ -236,7 +236,12 @@ export default {
 }
 </script>
 
+<style src='purecss/build/pure-min.css'>
+
+</style>
+
 <style>
+
 #app {
 }
 
