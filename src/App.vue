@@ -65,15 +65,45 @@
         Total Leftover: ${{ getLeftoverTips() }}
       </p>
 
-      <div v-for="(employee, index) in getEmployeeTips()" :key="`employee-compute-${index}`">
-        <h4>{{ employee.name }}</h4>
-        <span>Total Tips: ${{ employee.total }}</span>
-        <ul v-if="employee.bills">
-          <li v-for="(bill, j) in employee.bills" :key="`employee-compute-${index}-bills-${j}`">
-            Number of {{ bill.type }}'s -- {{ bill.count }}
-          </li>
-        </ul>
-      </div>
+      <table class="pure-table pure-table-horizontal">
+        <thead>
+          <th>Bill</th>
+          <th>Bills Required</th>
+          <th>Difference</th>
+        </thead>
+        <tbody>
+          <tr v-for="(bill, index) in [1, 5, 10, 20]" :key="`bill-${bill}`">
+            <td>${{ bill }}</td>
+            <td>{{ getEmployeeTips().reduce((count, employee) => { return count + employee.bills[3 - index].count }, 0)}}</td>
+            <td>{{ getEmployeeTips().reduce((count, employee) => { return count + employee.bills[3 - index].count }, 0) - getBillOfType(bill).count }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="pure-table pure-table-horizontal">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Total Tips</th>
+            <th>%</th>
+            <th>1's</th>
+            <th>5's</th>
+            <th>10's</th>
+            <th>20's</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(employee, index) in getEmployeeTips()" :key="`employee-compute-${index}`">
+            <td>{{ employee.name }}</td>
+            <td>${{ employee.total }}</td>
+            <td>{{ employee.percent }}%</td>
+            <td>{{ employee.bills[3].count }}</td>
+            <td>{{ employee.bills[2].count }}</td>
+            <td>{{ employee.bills[1].count }}</td>
+            <td>{{ employee.bills[0].count }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -86,6 +116,7 @@ export default {
 
   computed: {
     ...mapGetters([
+      'getBillOfType',
       'getEmployeeTips',
       'getLeftoverTips',
       'getTotalHours',
@@ -171,6 +202,10 @@ body {
 
 .pure-button-secondary {
     background: rgb(66, 184, 221);
+}
+
+.pure-table {
+  margin-bottom: 5px;
 }
 
 </style>

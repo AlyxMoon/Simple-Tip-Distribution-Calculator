@@ -1,3 +1,7 @@
+export const getBillOfType = state => type => {
+  return state.bills.find(bill => bill.type === type)
+}
+
 export const getEmployeeTips = state => () => {
   let validBillTypes = [20, 10, 5, 1]
   let totalHours = getTotalHours(state)()
@@ -20,7 +24,8 @@ export const getEmployeeTips = state => () => {
     return {
       ...employee,
       bills,
-      total
+      total,
+      percent: ((total / totalTips) * 100).toFixed(2)
     }
   })
 }
