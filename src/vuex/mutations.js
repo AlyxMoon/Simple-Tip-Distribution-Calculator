@@ -1,6 +1,5 @@
 export const ADD_EMPLOYEE = (state, payload) => {
   state.employees = state.employees.concat(payload.employee)
-  state.employeeTips = state.employeeTips.concat([])
 }
 
 export const CHANGE_PAGE = (state, payload) => {
@@ -9,7 +8,6 @@ export const CHANGE_PAGE = (state, payload) => {
 
 export const REMOVE_EMPLOYEE = (state, payload) => {
   state.employees = state.employees.slice(0, payload.index).concat(state.employees.slice(payload.index + 1))
-  state.employeeTips = state.employeeTips.slice(0, payload.index).concat(state.employeeTips.slice(payload.index + 1))
 }
 
 export const SET_BILL_COUNT = (state, payload) => {

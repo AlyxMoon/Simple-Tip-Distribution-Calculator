@@ -8,7 +8,6 @@ import * as mutations from './mutations'
 Vue.use(Vuex)
 const state = {
   employees: [],
-  employeeTips: [],
   bills: [
     { type: 1, count: 0 },
     { type: 2, count: 0 },

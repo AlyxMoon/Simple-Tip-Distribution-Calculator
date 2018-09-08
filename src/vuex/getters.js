@@ -1,4 +1,4 @@
-export const getEmployeeBills = state => () => {
+export const getEmployeeTips = state => () => {
   let validBillTypes = [20, 10, 5, 1]
   let totalHours = getTotalHours(state)()
   let totalTips = getTotalTips(state)()
@@ -6,18 +6,29 @@ export const getEmployeeBills = state => () => {
   return state.employees.map(employee => {
     let total = totalHours ? Math.floor(totalTips * (employee.hours / totalHours)) : 0
 
+    let tempTotal = total
     let bills = validBillTypes.map(bill => {
       let count = 0
-      while (total >= bill) {
+      while (tempTotal >= bill) {
         count += 1
-        total -= bill
+        tempTotal -= bill
       }
 
       return { type: bill, count }
     })
 
-    return { ...employee, bills }
+    return {
+      ...employee,
+      bills,
+      total
+    }
   })
+}
+
+export const getLeftoverTips = state => () => {
+  return getEmployeeTips(state)().reduce((total, employee) => {
+    return total - employee.total
+  }, getTotalTips(state)())
 }
 
 export const getTotalHours = state => () => {

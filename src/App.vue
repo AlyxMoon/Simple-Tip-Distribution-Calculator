@@ -56,19 +56,15 @@
         Total Hours: {{ getTotalHours() }}
       </p>
       <p>
-        Total Tips: {{ getTotalTips() }}
+        Total Tips: ${{ getTotalTips() }}
       </p>
-      <!-- <p>
-        Leftover Tips: {{ leftovers }}
+      <p>
+        Total Leftover: ${{ getLeftoverTips() }}
       </p>
-      <ul v-for="(data, type) in neededBills" :key="`neededBill-${type}`">
-        <li>
-          Number of {{ type }}'s -- {{ data.count }} -- diff: {{ data.diff}}
-        </li>
-      </ul> -->
 
-      <div v-for="(employee, index) in getEmployeeBills()" :key="`employee-compute-${index}`">
+      <div v-for="(employee, index) in getEmployeeTips()" :key="`employee-compute-${index}`">
         <h4>{{ employee.name }}</h4>
+        <span>Total Tips: ${{ employee.total }}</span>
         <ul v-if="employee.bills">
           <li v-for="(bill, j) in employee.bills" :key="`employee-compute-${index}-bills-${j}`">
             Number of {{ bill.type }}'s -- {{ bill.count }}
@@ -86,14 +82,9 @@ export default {
   name: 'App',
 
   computed: {
-    // leftovers () {
-    //   if (this.totalHours === 0) return 0
-    //   return this.totalTips - this.employees.reduce((sum, employee) => {
-    //     return this.employeeTips(employee.hours) + sum
-    //   }, 0)
-    // },
     ...mapGetters([
-      'getEmployeeBills',
+      'getEmployeeTips',
+      'getLeftoverTips',
       'getTotalHours',
       'getTotalTips'
     ]),
@@ -101,7 +92,6 @@ export default {
       bills: state => state.app.bills,
       change: state => state.app.change,
       employees: state => state.app.employees,
-      employeeBills: state => state.app.employeeBills,
       page: state => state.app.page
     })
   },
