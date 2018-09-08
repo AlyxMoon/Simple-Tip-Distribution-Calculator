@@ -11,7 +11,11 @@ export const REMOVE_EMPLOYEE = (state, payload) => {
 }
 
 export const SET_BILL_COUNT = (state, payload) => {
-  state.bills[payload.index] = Object.assign({}, state.bills[payload.index], { count: payload.count })
+  state.bills = [
+    ...state.bills.slice(0, payload.index),
+    { type: state.bills[payload.index].type, count: payload.count },
+    ...state.bills.slice(payload.index + 1)
+  ]
 }
 
 export const SET_CHANGE_COUNT = (state, payload) => {
@@ -19,11 +23,19 @@ export const SET_CHANGE_COUNT = (state, payload) => {
 }
 
 export const SET_EMPLOYEE_HOURS = (state, payload) => {
-  state.employees[payload.index] = Object.assign({}, state.employees[payload.index], { hours: payload.hours })
+  state.employees = [
+    ...state.employees.slice(0, payload.index),
+    { name: state.employees[payload.index].name, hours: payload.hours },
+    ...state.employees.slice(payload.index + 1)
+  ]
 }
 
 export const SET_EMPLOYEE_NAME = (state, payload) => {
-  state.employees[payload.index] = Object.assign({}, state.employees[payload.index], { name: payload.name })
+  state.employees = [
+    ...state.employees.slice(0, payload.index),
+    { name: payload.name, hours: state.employees[payload.index].hours },
+    ...state.employees.slice(payload.index + 1)
+  ]
 }
 
 export const SET_EMPLOYEES = (state, payload) => {

@@ -2,6 +2,16 @@
   <div id="app">
     <div class="button-group">
       <button class="pure-button pure-button-success" @click="saveToStorage">Save to Storage</button>
+      <button
+        class="pure-button pure-button-warning"
+        @click="clearEmployeeHours" v-if="page === 0">
+        Clear Employee Hours
+      </button>
+      <button
+      class="pure-button pure-button-warning"
+      @click="clearBillCounts" v-if="page === 1">
+      Clear Bill Counts
+    </button>
     </div>
     <ul class="page-navigation">
       <li class="navigation-item">
@@ -59,10 +69,10 @@
         Total Hours: {{ getTotalHours() }}
       </p>
       <p>
-        Total Tips: ${{ getTotalTips() }}
+        Total Tips: ${{ getTotalTips().toFixed(2) }}
       </p>
       <p>
-        Total Leftover: ${{ getLeftoverTips() }}
+        Total Leftover: ${{ getLeftoverTips().toFixed(2) }}
       </p>
 
       <table class="pure-table pure-table-horizontal">
@@ -137,6 +147,8 @@ export default {
       'changeEmployeeHours',
       'changeEmployeeName',
       'changePage',
+      'clearBillCounts',
+      'clearEmployeeHours',
       'removeEmployee',
       'loadFromStorage',
       'saveToStorage'

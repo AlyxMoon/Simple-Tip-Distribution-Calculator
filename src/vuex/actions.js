@@ -33,6 +33,18 @@ export const changeEmployeeName = ({ commit, state }, { index, name }) => {
   }
 }
 
+export const clearBillCounts = ({ commit, state }) => {
+  for (let type of [1, 2, 5, 10, 20, 50, 100, 'change']) {
+    changeBillCount({ commit, state }, { type, count: 0 })
+  }
+}
+
+export const clearEmployeeHours = ({ commit, state }) => {
+  for (let index = 0; index < state.employees.length; index++) {
+    commit('SET_EMPLOYEE_HOURS', { index, hours: 0 })
+  }
+}
+
 export const removeEmployee = ({ commit, state }, index) => {
   if (index >= 0 && index < state.employees.length) {
     commit('REMOVE_EMPLOYEE', { index })
@@ -48,7 +60,7 @@ export const loadFromStorage = ({ commit, state }) => {
   ])
     .then(values => {
       commit('SET_EMPLOYEES', { employees: values[0] })
-      values[1].forEach(bill => changeBillCount({ commit, state }, bill.type, bill.Counts))
+      values[1].forEach(bill => changeBillCount({ commit, state }, { type: bill.type, count: bill.count }))
       commit('SET_CHANGE_COUNT', { count: values[2] })
     })
 }
