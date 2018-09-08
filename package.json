@@ -1,5 +1,5 @@
 {
-  "name": "simple-tip-distribution-calendar",
+  "name": "simple-tip-distribution-calculator",
   "version": "1.0.0",
   "description": "A calculator for easily determining how many tips employees get from a shared pool and how many of each bill type is required to make that happen.",
   "author": "Allister <allisterkmoon@gmail.com>",
