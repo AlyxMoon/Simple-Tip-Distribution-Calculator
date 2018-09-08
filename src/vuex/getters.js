@@ -7,8 +7,26 @@ export const getEmployeeTips = state => () => {
   let totalHours = getTotalHours(state)()
   let totalTips = getTotalTips(state)()
 
-  return state.employees.map(employee => {
+  let employeeTotals = state.employees.map((employee, index) => {
+    return {
+      total: totalHours ? Math.floor(totalTips * (employee.hours / totalHours)) : 0,
+      index
+    }
+  })
+  let leftover = employeeTotals.reduce((leftover, employee) => { return leftover - employee.total }, totalTips)
+
+  let whoGetsLeftovers = []
+  employeeTotals.sort((x, y) => {
+    if (x.total < y.total) return 1
+    if (x.total > y.total) return -1
+    return 0
+  }).forEach(employee => {
+    if (--leftover >= 0) whoGetsLeftovers.push(employee.index)
+  })
+
+  return state.employees.map((employee, index) => {
     let total = totalHours ? Math.floor(totalTips * (employee.hours / totalHours)) : 0
+    total += whoGetsLeftovers.includes(index) ? 1 : 0
 
     let tempTotal = total
     let bills = validBillTypes.map(bill => {
