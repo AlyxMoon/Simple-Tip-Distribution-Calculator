@@ -18,7 +18,8 @@ const state = {
     { type: 100, count: 0 }
   ],
   change: 0,
-  page: 0
+  page: 0,
+  saving: false
 }
 
 export default new Vuex.Store({

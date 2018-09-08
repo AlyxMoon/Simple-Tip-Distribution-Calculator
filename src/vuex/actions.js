@@ -65,10 +65,13 @@ export const loadFromStorage = ({ commit, state }) => {
     })
 }
 
-export const saveToStorage = ({ state }) => {
+export const saveToStorage = ({ commit, state }) => {
+  commit('SET_SAVING', { saving: true })
   return Promise.all([
     localForage.setItem('employees', state.employees),
     localForage.setItem('bills', state.bills),
     localForage.setItem('change', state.change)
   ])
+    .then(() => new Promise(resolve => setTimeout(resolve, 500)))
+    .then(() => commit('SET_SAVING', { saving: false }))
 }

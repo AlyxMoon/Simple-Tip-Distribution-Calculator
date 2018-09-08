@@ -11,6 +11,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.3.1",
     "localforage": "^1.7.2",
     "purecss": "^1.0.0",
     "vue": "^2.5.2",

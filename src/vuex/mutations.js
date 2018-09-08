@@ -41,3 +41,7 @@ export const SET_EMPLOYEE_NAME = (state, payload) => {
 export const SET_EMPLOYEES = (state, payload) => {
   state.employees = payload.employees
 }
+
+export const SET_SAVING = (state, payload) => {
+  state.saving = payload.saving
+}

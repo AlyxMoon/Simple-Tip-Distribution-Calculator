@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <div class="button-group">
-      <button class="pure-button pure-button-success" @click="saveToStorage">Save to Storage</button>
+      <button
+        class="pure-button pure-button-success"
+        @click="saveToStorage">
+        <i class="fas fa-spinner fa-spin" v-if="saving"></i> Save to Storage
+      </button>
       <button
         class="pure-button pure-button-warning"
         @click="clearEmployeeHours" v-if="page === 0">
@@ -136,7 +140,8 @@ export default {
       bills: state => state.app.bills,
       change: state => state.app.change,
       employees: state => state.app.employees,
-      page: state => state.app.page
+      page: state => state.app.page,
+      saving: state => state.app.saving
     })
   },
 
@@ -162,6 +167,7 @@ export default {
 </script>
 
 <style src='purecss/build/pure-min.css' />
+<style src='@fortawesome/fontawesome-free/css/all.min.css' />
 
 <style>
 body {
