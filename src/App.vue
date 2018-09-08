@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <div class="button-group">
+      <button class="pure-button pure-button-success" @click="saveToStorage">Save to Storage</button>
+    </div>
     <ul class="page-navigation">
       <li class="navigation-item">
         <button class="pure-button" :class="{ 'pure-button-primary': page === 0 }" @click="changePage(0)">Employees</button>
@@ -103,8 +106,14 @@ export default {
       'changeEmployeeHours',
       'changeEmployeeName',
       'changePage',
-      'removeEmployee'
+      'removeEmployee',
+      'loadFromStorage',
+      'saveToStorage'
     ])
+  },
+
+  created () {
+    this.loadFromStorage()
   }
 }
 </script>
@@ -133,6 +142,10 @@ body {
 
 .navigation-item {
   display: inline-block;
+}
+
+.button-group {
+  margin-bottom: 5px;
 }
 
 .pure-button-success,

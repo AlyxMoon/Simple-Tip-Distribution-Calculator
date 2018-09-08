@@ -15,7 +15,7 @@ export const SET_BILL_COUNT = (state, payload) => {
 }
 
 export const SET_CHANGE_COUNT = (state, payload) => {
-  state.change = payload.change
+  state.change = payload.count
 }
 
 export const SET_EMPLOYEE_HOURS = (state, payload) => {
@@ -24,4 +24,8 @@ export const SET_EMPLOYEE_HOURS = (state, payload) => {
 
 export const SET_EMPLOYEE_NAME = (state, payload) => {
   state.employees[payload.index] = Object.assign({}, state.employees[payload.index], { name: payload.name })
+}
+
+export const SET_EMPLOYEES = (state, payload) => {
+  state.employees = payload.employees
 }

@@ -1,3 +1,5 @@
+import localForage from 'localforage'
+
 export const addEmployee = ({ commit }) => {
   let employee = { name: '', hours: 0 }
 
@@ -13,9 +15,9 @@ export const changePage = ({ commit }, page) => {
 
 export const changeBillCount = ({ commit, state }, { type, count }) => {
   if (type === 'change') {
-    commit('SET_CHANGE_COUNT', { count })
+    commit('SET_CHANGE_COUNT', { count: Number(count) })
   } else {
-    commit('SET_BILL_COUNT', { index: state.bills.findIndex(bill => bill.type === type), count })
+    commit('SET_BILL_COUNT', { index: state.bills.findIndex(bill => bill.type === type), count: Number(count) })
   }
 }
 
@@ -37,58 +39,24 @@ export const removeEmployee = ({ commit, state }, index) => {
   }
 }
 
-// const validBillTypes = [20, 10, 5, 1]
-// computeNeededBills () {
-//   this.neededBills = {
-//     1: {
-//       count: 0,
-//       diff: 0
-//     },
-//     5: {
-//       count: 0,
-//       diff: 0
-//     },
-//     10: {
-//       count: 0,
-//       diff: 0
-//     },
-//     20: {
-//       count: 0,
-//       diff: 0
-//     }
-//   }
-//
-//   this.employees.forEach(employee => {
-//     employee.bills.forEach(bill => {
-//       this.neededBills[bill.type].count += bill.count
-//     })
-//   })
-//
-//   this.neededBills[1].diff = this.neededBills[1].count - this.bills[0].count
-//   this.neededBills[5].diff = this.neededBills[5].count - this.bills[2].count
-//   this.neededBills[10].diff = this.neededBills[10].count - this.bills[3].count
-//   this.neededBills[20].diff = this.neededBills[20].count - this.bills[4].count
-// },
-//
-// employeeTips (hours) {
-//   if (this.totalHours === 0) return 0
-//   return Math.floor(this.totalTips * (hours / this.totalHours))
-// },
-//
-// updateEmployeeBills () {
-//   this.employees.forEach(employee => {
-//     let total = this.employeeTips(employee.hours)
-//     employee.bills = validBillTypes.map(bill => {
-//       let count = 0
-//       while (total >= bill) {
-//         count += 1
-//         total -= bill
-//       }
-//
-//       return {
-//         type: bill,
-//         count
-//       }
-//     })
-//   })
-// }
+// API stuff
+export const loadFromStorage = ({ commit, state }) => {
+  return Promise.all([
+    localForage.getItem('employees'),
+    localForage.getItem('bills'),
+    localForage.getItem('change')
+  ])
+    .then(values => {
+      commit('SET_EMPLOYEES', { employees: values[0] })
+      values[1].forEach(bill => changeBillCount({ commit, state }, bill.type, bill.Counts))
+      commit('SET_CHANGE_COUNT', { count: values[2] })
+    })
+}
+
+export const saveToStorage = ({ state }) => {
+  return Promise.all([
+    localForage.setItem('employees', state.employees),
+    localForage.setItem('bills', state.bills),
+    localForage.setItem('change', state.change)
+  ])
+}
