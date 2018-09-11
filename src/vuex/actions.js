@@ -59,9 +59,15 @@ export const loadFromStorage = ({ commit, state }) => {
     localForage.getItem('change')
   ])
     .then(values => {
-      commit('SET_EMPLOYEES', { employees: values[0] })
-      values[1].forEach(bill => changeBillCount({ commit, state }, { type: bill.type, count: bill.count }))
-      commit('SET_CHANGE_COUNT', { count: values[2] })
+      if (values[0] && values.length > 0) {
+        commit('SET_EMPLOYEES', { employees: values[0] })
+      }
+      if (values[1] && values[1].length > 0) {
+        values[1].forEach(bill => changeBillCount({ commit, state }, { type: bill.type, count: bill.count }))
+      }
+      if (values[2]) {
+        commit('SET_CHANGE_COUNT', { count: values[2] })
+      }
     })
 }
 
