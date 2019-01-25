@@ -46,7 +46,8 @@ export const clearEmployeeHours = ({ commit, state }) => {
 }
 
 export const removeEmployee = ({ commit, state }, index) => {
-  if (index >= 0 && index < state.employees.length) {
+  confirm('test?')
+  if (index >= 0 && index < state.employees.length && confirm('Are you sure you want to remove this person?')) {
     commit('REMOVE_EMPLOYEE', { index })
   }
 }
