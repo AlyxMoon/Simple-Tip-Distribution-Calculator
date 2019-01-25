@@ -33,16 +33,26 @@
     <div v-if="page === 0">
       <template v-for="(employee, index) in employees" >
         <form class="pure-form" :key="`employee-info-${index}`">
-          <fieldset class="pure-group">
-            <input
-              class="pure-input-3-4" type="text" placeholder="Employee Name"
-              :value="employee.name" @input="changeEmployeeName({ index, name: $event.target.value })" />
-            <input
-              class="pure-input-3-4" type="number" min="0" placeholder="Hours Worked"
-              :value="employee.hours" @input="changeEmployeeHours({ index, hours: $event.target.value })" />
-            <input
-              class="pure-input-3-4 pure-button pure-button-error" type="submit"
-              @click.prevent="removeEmployee(index)" value="Remove" />
+          <fieldset>
+            <div class="pure-g">
+              <div class="pure-u-5-8">
+                <input
+                  class="pure-u-1 br-straight" type="text" placeholder="Employee Name"
+                  :value="employee.name" @input="changeEmployeeName({ index, name: $event.target.value })" />
+              </div>
+
+              <div class="pure-u-1-4">
+                <input
+                  class="pure-u-22-24 bl-straight" type="number" min="0"
+                  :value="employee.hours" @input="changeEmployeeHours({ index, hours: $event.target.value })" />
+              </div>
+
+              <div class="pure-u-1-8">
+                <input
+                  class="pure-u-1 pure-button pure-button-error" type="submit"
+                  @click.prevent="removeEmployee(index)" value="X" />
+              </div>
+            </div>
           </fieldset>
         </form>
       </template>
@@ -197,6 +207,10 @@ body {
   margin-bottom: 5px;
 }
 
+input[type=submit] {
+  border: 1px solid rgba(0,0,0,0);
+}
+
 .pure-button-success,
 .pure-button-error,
 .pure-button-warning,
@@ -225,5 +239,16 @@ body {
 .pure-table {
   margin-bottom: 5px;
 }
+
+.bl-straight {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.br-straight {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
 
 </style>
