@@ -80,10 +80,13 @@
 
     <div v-if="page === 2">
       <p>
-        Total Hours: {{ getTotalHours() }}
+        Total Hours: {{ getTotalHours().toFixed(2) }}
       </p>
       <p>
         Total Tips: ${{ getTotalTips().toFixed(2) }}
+      </p>
+      <p>
+        Tips per hour: ${{ (getTotalTips().toFixed(2) / getTotalHours()).toFixed(2) }}
       </p>
       <p>
         Total Leftover: ${{ getLeftoverTips().toFixed(2) }}
