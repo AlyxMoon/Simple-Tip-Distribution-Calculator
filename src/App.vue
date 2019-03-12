@@ -73,6 +73,9 @@
             <input
               id="change" name="change" type="number" min="0" step="0.01"
               :value="change" @input="changeBillCount({ type: 'change', count: $event.target.value })"  />
+            <input
+              id="change2" name="change2" type="number" min="0" step="0.01"
+              :value="change2" @input="changeBillCount({ type: 'change2', count: $event.target.value })"  />
           </div>
         </fieldset>
       </form>
@@ -152,6 +155,7 @@ export default {
     ...mapState({
       bills: state => state.app.bills,
       change: state => state.app.change,
+      change2: state => state.app.change2,
       employees: state => state.app.employees,
       page: state => state.app.page,
       saving: state => state.app.saving
@@ -252,6 +256,5 @@ input[type=submit] {
   border-top-right-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
-
 
 </style>

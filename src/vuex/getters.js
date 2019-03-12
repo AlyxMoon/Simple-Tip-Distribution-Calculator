@@ -61,7 +61,7 @@ export const getTotalHours = state => () => {
 }
 
 export const getTotalTips = state => () => {
-  return state.change + state.bills.reduce((sum, bill) => {
+  return state.change2 + state.change + state.bills.reduce((sum, bill) => {
     if (!isNaN(bill.type) && !isNaN(bill.count)) {
       return (bill.type * bill.count) + sum
     }

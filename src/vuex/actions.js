@@ -14,7 +14,7 @@ export const changePage = ({ commit }, page) => {
 }
 
 export const changeBillCount = ({ commit, state }, { type, count }) => {
-  if (type === 'change') {
+  if (type === 'change' || type === 'change2') {
     commit('SET_CHANGE_COUNT', { count: Number(count) })
   } else {
     commit('SET_BILL_COUNT', { index: state.bills.findIndex(bill => bill.type === type), count: Number(count) })
@@ -56,7 +56,8 @@ export const loadFromStorage = ({ commit, state }) => {
   return Promise.all([
     localForage.getItem('employees'),
     localForage.getItem('bills'),
-    localForage.getItem('change')
+    localForage.getItem('change'),
+    localForage.getItem('change2')
   ])
     .then(values => {
       if (values[0] && values.length > 0) {
@@ -68,6 +69,9 @@ export const loadFromStorage = ({ commit, state }) => {
       if (values[2]) {
         commit('SET_CHANGE_COUNT', { count: values[2] })
       }
+      if (values[3]) {
+        commit('SET_CHANGE_COUNT', { count2: values[3] })
+      }
     })
 }
 
@@ -76,7 +80,8 @@ export const saveToStorage = ({ commit, state }) => {
   return Promise.all([
     localForage.setItem('employees', state.employees),
     localForage.setItem('bills', state.bills),
-    localForage.setItem('change', state.change)
+    localForage.setItem('change', state.change),
+    localForage.setItem('change2', state.change2)
   ])
     .then(() => new Promise(resolve => setTimeout(resolve, 500)))
     .then(() => commit('SET_SAVING', { saving: false }))
