@@ -22,6 +22,10 @@ export const SET_CHANGE_COUNT = (state, payload) => {
   state.change = payload.count
 }
 
+export const SET_CHANGE_COUNT_2 = (state, payload) => {
+  state.change2 = payload.count
+}
+
 export const SET_EMPLOYEE_HOURS = (state, payload) => {
   state.employees = [
     ...state.employees.slice(0, payload.index),

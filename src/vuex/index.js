@@ -18,6 +18,7 @@ const state = {
     { type: 100, count: 0 }
   ],
   change: 0,
+  change2: 0,
   page: 0,
   saving: false
 }

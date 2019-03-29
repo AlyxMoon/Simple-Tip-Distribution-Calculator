@@ -43,7 +43,7 @@
 
               <div class="pure-u-1-4">
                 <input
-                  class="pure-u-22-24 bl-straight" type="number" min="0" step="0.01"
+                  class="pure-u-22-24 bl-straight" type="text"
                   :value="employee.hours" @input="changeEmployeeHours({ index, hours: $event.target.value })" />
               </div>
 

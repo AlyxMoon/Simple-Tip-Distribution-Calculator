@@ -14,8 +14,10 @@ export const changePage = ({ commit }, page) => {
 }
 
 export const changeBillCount = ({ commit, state }, { type, count }) => {
-  if (type === 'change' || type === 'change2') {
+  if (type === 'change') {
     commit('SET_CHANGE_COUNT', { count: Number(count) })
+  } else if (type === 'change2') {
+    commit('SET_CHANGE_COUNT_2', { count: Number(count) })
   } else {
     commit('SET_BILL_COUNT', { index: state.bills.findIndex(bill => bill.type === type), count: Number(count) })
   }
@@ -70,7 +72,7 @@ export const loadFromStorage = ({ commit, state }) => {
         commit('SET_CHANGE_COUNT', { count: values[2] })
       }
       if (values[3]) {
-        commit('SET_CHANGE_COUNT', { count2: values[3] })
+        commit('SET_CHANGE_COUNT_2', { count: values[3] })
       }
     })
 }
