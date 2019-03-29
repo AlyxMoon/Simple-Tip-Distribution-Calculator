@@ -1,4 +1,5 @@
 import localForage from 'localforage'
+import debounce from 'lodash/debounce'
 
 export const addEmployee = ({ commit }) => {
   let employee = { name: '', hours: 0 }
@@ -23,11 +24,11 @@ export const changeBillCount = ({ commit, state }, { type, count }) => {
   }
 }
 
-export const changeEmployeeHours = ({ commit, state }, { index, hours }) => {
+export const changeEmployeeHours = debounce(({ commit, state }, { index, hours }) => {
   if (index >= 0 && index < state.employees.length) {
     commit('SET_EMPLOYEE_HOURS', { index, hours: Number(hours) })
   }
-}
+}, 500)
 
 export const changeEmployeeName = ({ commit, state }, { index, name }) => {
   if (index >= 0 && index < state.employees.length) {
