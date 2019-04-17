@@ -37,7 +37,7 @@ export const changeEmployeeName = ({ commit, state }, { index, name }) => {
 }
 
 export const clearBillCounts = ({ commit, state }) => {
-  for (let type of [1, 2, 5, 10, 20, 50, 100, 'change']) {
+  for (let type of [1, 2, 5, 10, 20, 50, 100, 'change', 'change2']) {
     changeBillCount({ commit, state }, { type, count: 0 })
   }
 }
