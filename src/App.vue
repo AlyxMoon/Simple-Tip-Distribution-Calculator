@@ -17,17 +17,11 @@
       Clear Bill Counts
     </button>
     </div>
-    <ul class="page-navigation">
-      <li class="navigation-item">
-        <button class="pure-button" :class="{ 'pure-button-primary': page === 0 }" @click="changePage(0)">Employees</button>
-      </li>
-      <li class="navigation-item">
-        <button class="pure-button" :class="{ 'pure-button-primary': page === 1 }" @click="changePage(1)">Bill Counts</button>
-      </li>
-      <li class="navigation-item">
-        <button class="pure-button" :class="{ 'pure-button-primary': page === 2 }" @click="changePage(2)">Computed Stuff</button>
-      </li>
-    </ul>
+    <div class="button-group">
+      <button class="pure-button" :class="{ 'pure-button-primary': page === 0 }" @click="changePage(0)">Employees</button>
+      <button class="pure-button" :class="{ 'pure-button-primary': page === 1 }" @click="changePage(1)">Bill Counts</button>
+      <button class="pure-button" :class="{ 'pure-button-primary': page === 2 }" @click="changePage(2)">Computed Stuff</button>
+    </div>
     <hr />
 
     <div v-if="page === 0" class="content">
@@ -242,16 +236,6 @@ body {
   color: red;
   cursor: pointer;
   user-select: none;
-}
-
-.page-navigation {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.navigation-item {
-  display: inline-block;
 }
 
 @media (min-width: 768px) {
