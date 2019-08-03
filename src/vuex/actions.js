@@ -7,6 +7,18 @@ export const addEmployee = ({ commit }) => {
   commit('ADD_EMPLOYEE', { employee })
 }
 
+export const moveEmployee = ({ commit, state }, { oldIndex, newIndex }) => {
+  console.log('before', JSON.stringify(state.employees))
+  let newEmployeeArray = state.employees.slice()
+  newEmployeeArray.splice(newIndex, 0, state.employees[oldIndex])
+  newEmployeeArray.splice(
+    oldIndex + (oldIndex >= newIndex ? 1 : 0),
+    1
+  )
+  console.log('after', JSON.stringify(newEmployeeArray))
+  commit('SET_EMPLOYEES', { employees: newEmployeeArray })
+}
+
 export const changePage = ({ commit }, page) => {
   if (page < 0) page = 0
   if (page > 2) page = 2

@@ -33,29 +33,40 @@
     <div v-if="page === 0">
       <template v-for="(employee, index) in employees" >
         <form class="pure-form" :key="`employee-info-${index}`">
-          <fieldset>
+          <fieldset
+            :class="{ 'drag-active': draggingOverIndex === index }"
+            draggable="true"
+            @dragover="handleDragOver(index)" @dragstart="handleDragStart(index)" @dragend="handleDragEnd()" >
             <div class="pure-g">
-              <div class="pure-u-5-8">
+              <div class="f-size-1 center-inner-element">
+                <i class="fas fa-grip-vertical"></i>
+              </div>
+              <div class="f-size-10">
                 <input
-                  class="pure-u-1 br-straight" type="text" placeholder="Employee Name"
+                  class="pure-u-1 b-round-0" type="text" placeholder="Employee Name"
                   :value="employee.name" @input="changeEmployeeName({ index, name: $event.target.value })" />
               </div>
 
-              <div class="pure-u-1-4">
+              <div class="f-size-2">
                 <input
-                  class="pure-u-22-24 bl-straight" type="number" min="0" step="0.01"
+                  class="pure-u-1 b-round-0" type="number" min="0" step="0.01"
                   :value="employee.hours" @input="changeEmployeeHours({ index, hours: $event.target.value })" />
               </div>
 
-              <div class="pure-u-1-8">
+              <div class="pure-size-1">
                 <input
-                  class="pure-u-1 pure-button pure-button-error" type="submit"
+                  class="pure-u-1 pure-button pure-button-error b-round-0" type="submit"
                   @click.prevent="removeEmployee(index)" value="X" />
               </div>
             </div>
           </fieldset>
         </form>
       </template>
+      <fieldset class="drag-placeholder"
+        :class="{ 'drag-active': draggingOverIndex === employees.length }"
+        draggable="true"
+        @dragover="handleDragOver(employees.length)" @dragend="handleDragEnd()" ></fieldset>
+
       <button class="pure-button pure-button-secondary" @click.prevent="addEmployee">Add Employee</button>
     </div>
 
@@ -144,6 +155,13 @@ import { mapActions, mapGetters, mapState } from 'vuex'
 export default {
   name: 'App',
 
+  data () {
+    return {
+      draggingOverIndex: -1,
+      draggingHeldIndex: -1
+    }
+  },
+
   computed: {
     ...mapGetters([
       'getBillOfType',
@@ -165,6 +183,7 @@ export default {
   methods: {
     ...mapActions([
       'addEmployee',
+      'moveEmployee',
       'changeBillCount',
       'changeEmployeeHours',
       'changeEmployeeName',
@@ -174,7 +193,25 @@ export default {
       'removeEmployee',
       'loadFromStorage',
       'saveToStorage'
-    ])
+    ]),
+
+    handleDragStart (index) {
+      this.draggingHeldIndex = index
+    },
+
+    handleDragOver (index) {
+      this.draggingOverIndex = index
+    },
+
+    handleDragEnd () {
+      console.log('you got dropped!', this.draggingHeldIndex, this.draggingOverIndex)
+      if (this.draggingHeldIndex > -1 && this.draggingOverIndex > -1 && this.draggingHeldIndex !== this.draggingOverIndex) {
+        this.moveEmployee({ oldIndex: this.draggingHeldIndex, newIndex: this.draggingOverIndex})
+      }
+
+      this.draggingHeldIndex = -1
+      this.draggingOverIndex = -1
+    }
   },
 
   created () {
@@ -247,14 +284,40 @@ input[type=submit] {
   margin-bottom: 5px;
 }
 
-.bl-straight {
-  border-top-left-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
+.b-round-0 {
+  border-radius: 0 !important;
+}
+.center-inner-element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.br-straight {
-  border-top-right-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
+.fa-grip-vertical {
+  cursor: crosshair;
+  width: 12px;
+}
+
+.f-size-1 {
+  flex-grow: 1;
+}
+.f-size-2 {
+  flex-grow: 2;
+}
+.f-size-3 {
+  flex-grow: 3;
+}
+.f-size-10 {
+  flex-grow: 10;
+}
+
+.drag-active {
+  border-top: 2px solid #3FB0AC !important;
+}
+
+.drag-placeholder {
+  border: none;
+  margin: 5px 0;
 }
 
 </style>
