@@ -30,31 +30,38 @@
     </ul>
     <hr />
 
-    <div v-if="page === 0">
+    <div v-if="page === 0" class="content">
       <template v-for="(employee, index) in employees" >
         <form class="pure-form" :key="`employee-info-${index}`">
-          <fieldset
-            :class="{ 'drag-active': draggingOverIndex === index }"
+          <fieldset class="employee-info"
+            :class="{ 'drag-active': (draggingOverIndex === index && draggingHeldIndex !== draggingOverIndex && draggingHeldIndex !== draggingOverIndex - 1) }"
             draggable="true"
-            @dragover="handleDragOver(index)" @dragstart="handleDragStart(index)" @dragend="handleDragEnd()" >
+            @dragstart="handleDragStart(index)"
+            @dragover="handleDragOver(index)"
+            @dragend="handleDragEnd()"
+          >
+
             <div class="pure-g">
-              <div class="f-size-1 center-inner-element">
+              <div class="f-size-1 py-1 center-inner-element">
                 <i class="fas fa-grip-vertical"></i>
               </div>
               <div class="f-size-10">
                 <input
+                  data-nodrag="true"
                   class="pure-u-1 b-round-0" type="text" placeholder="Employee Name"
                   :value="employee.name" @input="changeEmployeeName({ index, name: $event.target.value })" />
               </div>
 
-              <div class="f-size-2">
+              <div class="f-size-2 employee-num-col">
                 <input
+                  data-nodrag="true"
                   class="pure-u-1 b-round-0" type="number" min="0" step="0.01"
                   :value="employee.hours" @input="changeEmployeeHours({ index, hours: $event.target.value })" />
               </div>
 
-              <div class="pure-size-1">
+              <div class="pure-size-1" >
                 <input
+                  data-nodrag="true"
                   class="pure-u-1 pure-button pure-button-error b-round-0" type="submit"
                   @click.prevent="removeEmployee(index)" value="X" />
               </div>
@@ -62,7 +69,7 @@
           </fieldset>
         </form>
       </template>
-      <fieldset class="drag-placeholder"
+      <fieldset class="drag-placeholder employee-info"
         :class="{ 'drag-active': draggingOverIndex === employees.length }"
         draggable="true"
         @dragover="handleDragOver(employees.length)" @dragend="handleDragEnd()" ></fieldset>
@@ -70,7 +77,7 @@
       <button class="pure-button pure-button-secondary" @click.prevent="addEmployee">Add Employee</button>
     </div>
 
-    <div v-if="page === 1">
+    <div v-if="page === 1" class="content">
       <form class="pure-form pure-form-aligned">
         <fieldset>
           <div class="pure-control-group" v-for="(bill, index) in bills" :key="`bill-${index}`">
@@ -92,7 +99,7 @@
       </form>
     </div>
 
-    <div v-if="page === 2">
+    <div v-if="page === 2" class="content">
       <p>
         Total Hours: {{ getTotalHours().toFixed(2) }}
       </p>
@@ -196,17 +203,23 @@ export default {
     ]),
 
     handleDragStart (index) {
+      console.log('started!', index)
       this.draggingHeldIndex = index
     },
 
     handleDragOver (index) {
+      console.log('dragging over!', index)
       this.draggingOverIndex = index
     },
 
+    handleDragTouchOver (event) {
+      console.log(event)
+    },
+
     handleDragEnd () {
-      console.log('you got dropped!', this.draggingHeldIndex, this.draggingOverIndex)
+      console.log('ending!', this.draggingHeldIndex, this.draggingOverIndex)
       if (this.draggingHeldIndex > -1 && this.draggingOverIndex > -1 && this.draggingHeldIndex !== this.draggingOverIndex) {
-        this.moveEmployee({ oldIndex: this.draggingHeldIndex, newIndex: this.draggingOverIndex})
+        this.moveEmployee({ oldIndex: this.draggingHeldIndex, newIndex: this.draggingOverIndex })
       }
 
       this.draggingHeldIndex = -1
@@ -245,6 +258,12 @@ body {
 
 .navigation-item {
   display: inline-block;
+}
+
+@media (min-width: 768px) {
+  .employee-info {
+    width: 60%;
+  }
 }
 
 .button-group {
@@ -311,6 +330,10 @@ input[type=submit] {
   flex-grow: 10;
 }
 
+.pure-g {
+  flex-wrap: nowrap;
+}
+
 .drag-active {
   border-top: 2px solid #3FB0AC !important;
 }
@@ -318,6 +341,15 @@ input[type=submit] {
 .drag-placeholder {
   border: none;
   margin: 5px 0;
+}
+
+.py-1 {
+  padding-left: 0.25rem !important;
+  padding-right: 0.25rem !important;
+}
+
+.employee-num-col {
+  max-width: 25%;
 }
 
 </style>
