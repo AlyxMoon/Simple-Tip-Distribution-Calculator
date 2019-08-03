@@ -42,7 +42,7 @@
           >
 
             <div class="pure-g">
-              <div class="f-size-1 py-1 center-inner-element">
+              <div class="f-size-1 py-1 drag-icon-wrapper">
                 <i class="fas fa-grip-vertical"></i>
               </div>
               <div class="f-size-10">
@@ -69,7 +69,8 @@
           </fieldset>
         </form>
       </template>
-      <fieldset class="drag-placeholder employee-info"
+      <fieldset v-if="employees.length > 0"
+        class="drag-placeholder employee-info"
         :class="{ 'drag-active': draggingOverIndex === employees.length }"
         draggable="true"
         @dragover="handleDragOver(employees.length)" @dragend="handleDragEnd()" ></fieldset>
@@ -203,21 +204,14 @@ export default {
     ]),
 
     handleDragStart (index) {
-      console.log('started!', index)
       this.draggingHeldIndex = index
     },
 
     handleDragOver (index) {
-      console.log('dragging over!', index)
       this.draggingOverIndex = index
     },
 
-    handleDragTouchOver (event) {
-      console.log(event)
-    },
-
     handleDragEnd () {
-      console.log('ending!', this.draggingHeldIndex, this.draggingOverIndex)
       if (this.draggingHeldIndex > -1 && this.draggingOverIndex > -1 && this.draggingHeldIndex !== this.draggingOverIndex) {
         this.moveEmployee({ oldIndex: this.draggingHeldIndex, newIndex: this.draggingOverIndex })
       }
@@ -268,6 +262,11 @@ body {
 
 .button-group {
   margin-bottom: 5px;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.button-group button {
+  margin-right: 5px;
 }
 
 input[type=submit] {
@@ -306,7 +305,8 @@ input[type=submit] {
 .b-round-0 {
   border-radius: 0 !important;
 }
-.center-inner-element {
+.drag-icon-wrapper {
+  width: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
