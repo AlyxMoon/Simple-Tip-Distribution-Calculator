@@ -53,11 +53,24 @@
                   :value="employee.hours" @input="changeEmployeeHours({ index, hours: $event.target.value })" />
               </div>
 
-              <div class="pure-size-1" >
+              <div class="pure-size-1">
                 <input
                   data-nodrag="true"
                   class="pure-u-1 pure-button pure-button-error b-round-0" type="submit"
                   @click.prevent="removeEmployee(index)" value="X" />
+              </div>
+            </div>
+            <div class="pure-g">
+              <div
+                data-nodrag="true"
+                class="pure-u-1-3 py-1 text-align-right">
+                Quarters To Reserve (in $)
+              </div>
+              <div class="pure-u-2-3">
+                <input
+                  data-nodrag="true"
+                  class="pure-u-1 b-round-0" type="number" placeholder="Quarters in reserve (in $)" min="0" step="1"
+                  :value="employee.reservedQuarters" @input="changeEmployeeReservedQuarters({ index, quarters: $event.target.value })" />
               </div>
             </div>
           </fieldset>
@@ -96,16 +109,16 @@
 
     <div v-if="page === 2" class="content">
       <p>
-        Total Hours: {{ getTotalHours().toFixed(2) }}
+        Total Hours: {{ getTotalHours.toFixed(2) }}
       </p>
       <p>
-        Total Tips: ${{ getTotalTips().toFixed(2) }}
+        Total Tips: ${{ getTotalTips.toFixed(2) }}
       </p>
       <p>
-        Tips per hour: ${{ (getTotalTips().toFixed(2) / getTotalHours()).toFixed(2) }}
+        Tips per hour: ${{ (getTotalTips.toFixed(2) / getTotalHours).toFixed(2) }}
       </p>
       <p>
-        Total Leftover: ${{ getLeftoverTips().toFixed(2) }}
+        Total Leftover: ${{ getLeftoverTips.toFixed(2) }}
       </p>
 
       <table class="pure-table pure-table-horizontal">
@@ -117,8 +130,13 @@
         <tbody>
           <tr v-for="(bill, index) in [1, 5, 10, 20]" :key="`bill-${bill}`">
             <td>${{ bill }}</td>
-            <td>{{ getEmployeeTips().reduce((count, employee) => { return count + employee.bills[3 - index].count }, 0)}}</td>
-            <td>{{ getEmployeeTips().reduce((count, employee) => { return count + employee.bills[3 - index].count }, 0) - getBillOfType(bill).count }}</td>
+            <td>{{ getEmployeeTips.reduce((count, employee) => { return count + employee.bills[3 - index].count }, 0)}}</td>
+            <td>{{ getEmployeeTips.reduce((count, employee) => { return count + employee.bills[3 - index].count }, 0) - getBillOfType(bill).count }}</td>
+          </tr>
+          <tr>
+            <td>Quarters</td>
+            <td>{{ getSumOfQuarters * 4 }}</td>
+            <td>0</td>
           </tr>
         </tbody>
       </table>
@@ -133,10 +151,11 @@
             <th>5's</th>
             <th>10's</th>
             <th>20's</th>
+            <th>Quarters</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(employee, index) in getEmployeeTips()" :key="`employee-compute-${index}`">
+          <tr v-for="(employee, index) in getEmployeeTips" :key="`employee-compute-${index}`">
             <td>{{ employee.name }}</td>
             <td>${{ employee.total }}</td>
             <td>{{ employee.percent }}%</td>
@@ -144,6 +163,7 @@
             <td>{{ employee.bills[2].count }}</td>
             <td>{{ employee.bills[1].count }}</td>
             <td>{{ employee.bills[0].count }}</td>
+            <td>{{ employee.bills[4].count }}</td>
           </tr>
         </tbody>
       </table>
@@ -167,6 +187,7 @@ export default {
   computed: {
     ...mapGetters([
       'getBillOfType',
+      'getSumOfQuarters',
       'getEmployeeTips',
       'getLeftoverTips',
       'getTotalHours',
@@ -189,6 +210,7 @@ export default {
       'changeBillCount',
       'changeEmployeeHours',
       'changeEmployeeName',
+      'changeEmployeeReservedQuarters',
       'changePage',
       'clearBillCounts',
       'clearEmployeeHours',
@@ -316,6 +338,7 @@ input[type=submit] {
 
 .pure-g {
   flex-wrap: nowrap;
+  align-items: center;
 }
 
 .drag-active {
@@ -334,6 +357,10 @@ input[type=submit] {
 
 .employee-num-col {
   max-width: 25%;
+}
+
+.text-align-right {
+  text-align: right;
 }
 
 </style>

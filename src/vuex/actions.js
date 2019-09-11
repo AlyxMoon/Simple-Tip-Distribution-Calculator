@@ -2,20 +2,18 @@ import localForage from 'localforage'
 import debounce from 'lodash/debounce'
 
 export const addEmployee = ({ commit }) => {
-  let employee = { name: '', hours: 0 }
+  let employee = { name: '', hours: 0, reservedQuarters: null }
 
   commit('ADD_EMPLOYEE', { employee })
 }
 
 export const moveEmployee = ({ commit, state }, { oldIndex, newIndex }) => {
-  console.log('before', JSON.stringify(state.employees))
   let newEmployeeArray = state.employees.slice()
   newEmployeeArray.splice(newIndex, 0, state.employees[oldIndex])
   newEmployeeArray.splice(
     oldIndex + (oldIndex >= newIndex ? 1 : 0),
     1
   )
-  console.log('after', JSON.stringify(newEmployeeArray))
   commit('SET_EMPLOYEES', { employees: newEmployeeArray })
 }
 
@@ -45,6 +43,12 @@ export const changeEmployeeHours = debounce(({ commit, state }, { index, hours }
 export const changeEmployeeName = ({ commit, state }, { index, name }) => {
   if (index >= 0 && index < state.employees.length) {
     commit('SET_EMPLOYEE_NAME', { index, name })
+  }
+}
+
+export const changeEmployeeReservedQuarters = ({ commit, state }, { index, quarters }) => {
+  if (index >= 0 && index < state.employees.length) {
+    commit('SET_EMPLOYEE_QUARTERS', { index, quarters: Number(quarters) })
   }
 }
 

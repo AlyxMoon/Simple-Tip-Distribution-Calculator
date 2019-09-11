@@ -46,6 +46,13 @@ export const SET_EMPLOYEE_NAME = (state, payload) => {
   ]
 }
 
+export const SET_EMPLOYEE_QUARTERS = (state, payload) => {
+  state.employees[payload.index] = Object.assign(
+    state.employees[payload.index],
+    { reservedQuarters: payload.quarters }
+  )
+}
+
 export const SET_SAVING = (state, payload) => {
   state.saving = payload.saving
 }
