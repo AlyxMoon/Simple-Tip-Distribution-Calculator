@@ -31,19 +31,11 @@ export const SET_CHANGE_COUNT_2 = (state, payload) => {
 }
 
 export const SET_EMPLOYEE_HOURS = (state, payload) => {
-  state.employees = [
-    ...state.employees.slice(0, payload.index),
-    { name: state.employees[payload.index].name, hours: payload.hours },
-    ...state.employees.slice(payload.index + 1)
-  ]
+  state.employees[payload.index].hours = payload.hours
 }
 
 export const SET_EMPLOYEE_NAME = (state, payload) => {
-  state.employees = [
-    ...state.employees.slice(0, payload.index),
-    { name: payload.name, hours: state.employees[payload.index].hours },
-    ...state.employees.slice(payload.index + 1)
-  ]
+  state.employees[payload.index].name = payload.name
 }
 
 export const SET_EMPLOYEE_QUARTERS = (state, payload) => {
