@@ -63,7 +63,7 @@
             <div class="pure-g">
               <div
                 data-nodrag="true" draggable="true" @dragstart.prevent
-                class="pure-u-1-3 py-1 text-align-right">
+                class="pure-u-1-3 py-1 text-align-right flex-self-center">
                 Quarters To Reserve (in $)
               </div>
               <div class="pure-u-2-3">
@@ -350,6 +350,9 @@ input[type=submit] {
   flex-wrap: nowrap;
   align-items: start;
 }
+.pure-g > div {
+  margin-bottom: 0.3em;
+}
 
 .drag-active {
   border-top: 2px solid #3FB0AC !important;
@@ -371,6 +374,10 @@ input[type=submit] {
 
 .text-align-right {
   text-align: right;
+}
+
+.flex-self-center {
+  align-self: center;
 }
 
 .pure-control-group.skip-column > * {
