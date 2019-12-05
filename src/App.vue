@@ -311,11 +311,18 @@ input[type=submit] {
 .b-round-0 {
   border-radius: 0 !important;
 }
+
 .drag-icon-wrapper {
   width: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
+  align-self: center;
+}
+@media only screen and (max-width: 480px) {
+  .drag-icon-wrapper {
+    margin-bottom: 0.3em;
+  }
 }
 
 .fa-grip-vertical {
@@ -338,7 +345,7 @@ input[type=submit] {
 
 .pure-g {
   flex-wrap: nowrap;
-  align-items: center;
+  align-items: start;
 }
 
 .drag-active {
