@@ -103,6 +103,9 @@
               id="change2" name="change2" type="number" min="0" step="0.01"
               :value="change2" @input="changeBillCount({ type: 'change2', count: $event.target.value })"  />
           </div>
+          <div class="pure-control-group skip-column">
+            <span class="subLabel">Total Change: ${{ getTotalChangeAmounts }}</span>
+          </div>
         </fieldset>
       </form>
     </div>
@@ -180,10 +183,9 @@ export default {
   data () {
     return {
       draggingOverIndex: -1,
-      draggingHeldIndex: -1
+      draggingHeldIndex: -1,
     }
   },
-
   computed: {
     ...mapGetters([
       'getBillOfType',
@@ -191,7 +193,8 @@ export default {
       'getEmployeeTips',
       'getLeftoverTips',
       'getTotalHours',
-      'getTotalTips'
+      'getTotalTips',
+      'getTotalChangeAmounts',
     ]),
     ...mapState({
       bills: state => state.app.bills,
@@ -199,7 +202,7 @@ export default {
       change2: state => state.app.change2,
       employees: state => state.app.employees,
       page: state => state.app.page,
-      saving: state => state.app.saving
+      saving: state => state.app.saving,
     })
   },
 
@@ -216,7 +219,7 @@ export default {
       'clearEmployeeHours',
       'removeEmployee',
       'loadFromStorage',
-      'saveToStorage'
+      'saveToStorage',
     ]),
 
     handleDragStart (index) {
@@ -368,6 +371,15 @@ input[type=submit] {
 
 .text-align-right {
   text-align: right;
+}
+
+.pure-control-group.skip-column > * {
+  margin-left: 12em;
+}
+@media only screen and (max-width: 480px) {
+  .pure-control-group.skip-column > *  {
+    margin-left: 0;
+  }
 }
 
 </style>

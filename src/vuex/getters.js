@@ -79,3 +79,7 @@ export const getTotalTips = (state, getters) => {
     }, 0)
   )
 }
+
+export const getTotalChangeAmounts = (state, getters) => {
+  return state.change + state.change2
+}
