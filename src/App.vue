@@ -30,7 +30,7 @@
           <fieldset class="employee-info"
             :class="{ 'drag-active': (draggingOverIndex === index && draggingHeldIndex !== draggingOverIndex && draggingHeldIndex !== draggingOverIndex - 1) }"
             draggable="true"
-            @dragstart="handleDragStart(index)"
+            @dragstart="handleDragStart(index, $event)"
             @dragover="handleDragOver(index)"
             @dragend="handleDragEnd()"
           >
@@ -41,34 +41,34 @@
               </div>
               <div class="f-size-10">
                 <input
-                  data-nodrag="true"
+                  data-nodrag="true" draggable="true" @dragstart.prevent
                   class="pure-u-1 b-round-0" type="text" placeholder="Employee Name"
                   :value="employee.name" @input="changeEmployeeName({ index, name: $event.target.value })" />
               </div>
 
               <div class="f-size-2 employee-num-col">
                 <input
-                  data-nodrag="true"
+                  data-nodrag="true" draggable="true" @dragstart.prevent
                   class="pure-u-1 b-round-0" type="number" min="0" step="0.01"
                   :value="employee.hours" @input="changeEmployeeHours({ index, hours: $event.target.value })" />
               </div>
 
               <div class="pure-size-1">
                 <input
-                  data-nodrag="true"
+                  data-nodrag="true" draggable="true" @dragstart.prevent
                   class="pure-u-1 pure-button pure-button-error b-round-0" type="submit"
                   @click.prevent="removeEmployee(index)" value="X" />
               </div>
             </div>
             <div class="pure-g">
               <div
-                data-nodrag="true"
+                data-nodrag="true" draggable="true" @dragstart.prevent
                 class="pure-u-1-3 py-1 text-align-right">
                 Quarters To Reserve (in $)
               </div>
               <div class="pure-u-2-3">
                 <input
-                  data-nodrag="true"
+                  data-nodrag="true" draggable="true" @dragstart.prevent
                   class="pure-u-1 b-round-0" type="number" placeholder="Quarters in reserve (in $)" min="0" step="1"
                   :value="employee.reservedQuarters" @input="changeEmployeeReservedQuarters({ index, quarters: $event.target.value })" />
               </div>
@@ -183,7 +183,7 @@ export default {
   data () {
     return {
       draggingOverIndex: -1,
-      draggingHeldIndex: -1,
+      draggingHeldIndex: -1
     }
   },
   computed: {
@@ -194,7 +194,7 @@ export default {
       'getLeftoverTips',
       'getTotalHours',
       'getTotalTips',
-      'getTotalChangeAmounts',
+      'getTotalChangeAmounts'
     ]),
     ...mapState({
       bills: state => state.app.bills,
@@ -202,7 +202,7 @@ export default {
       change2: state => state.app.change2,
       employees: state => state.app.employees,
       page: state => state.app.page,
-      saving: state => state.app.saving,
+      saving: state => state.app.saving
     })
   },
 
@@ -219,10 +219,10 @@ export default {
       'clearEmployeeHours',
       'removeEmployee',
       'loadFromStorage',
-      'saveToStorage',
+      'saveToStorage'
     ]),
 
-    handleDragStart (index) {
+    handleDragStart (index, event) {
       this.draggingHeldIndex = index
     },
 
